@@ -80,24 +80,27 @@ while user_action != 7:
 # DELETE ENTRY
     if user_action == 3:
         person_to_remove = raw_input('Person to Remove (first name): ')
-        for i in range(0, len(phonebook)):
-            if phonebook[i].search_name == person_to_remove.upper():
-                are_you_sure = raw_input('Remove %s %s (Y/N)? ' % (phonebook[i].first, phonebook[i].last))
+        for entry in phonebook:
+            if entry.search_name == person_to_remove.upper():
+                are_you_sure = raw_input('Remove %s %s (Y/N)? ' % (entry.first, entry.last))
                 if are_you_sure.upper() == 'Y' or are_you_sure.upper() == 'YES':
-                    phonebook.remove(phonebook[i])
+                    phonebook.remove(entry)
+                    print '\n** %s %s REMOVED ** ' % (entry.first, entry.last)
                 else:
                     print 'OK. As you were...'
 
 # LIST ALL ENTRIES
     if user_action == 4:
+        print '\n************'
         for i in range(0, len(phonebook)):
-            print '\n***%s %s, %s, %s, %s' % (
+            print '*  %s %s, %s, %s, %s' % (
                 phonebook[i].first,
                 phonebook[i].last,
                 phonebook[i].email,
                 phonebook[i].phone,
                 phonebook[i].url
                 )
+        print '************'
 
 # SAVE ENTRIES
     if user_action == 5:
