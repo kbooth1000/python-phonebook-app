@@ -3,11 +3,13 @@ import os, pickle
 phonebook = []
 
 class Person(object):
-    def __init__(self, first, last, email, phone):
+    def __init__(self, first, last, email, phone, url):
         self.first = first
         self.last = last
         self.email = email
         self.phone = phone
+        self.url = url
+        self.search_name = first.upper()
 
 def save_data():
     global phonebook
@@ -21,8 +23,8 @@ def retrieve_data():
         retrieved_data_file = open('phonebook_data.pickle', 'r+')
         phonebook = pickle.load(retrieved_data_file)
         retrieved_data_file.close()
-        print '**** RETRIEVED ****\n'
-        print phonebook[0].first
+        print '\n**** RETRIEVED ****\n'
+        #print phonebook[0].first
     else:
         phonebook = []
 
@@ -51,13 +53,14 @@ while user_action != 7:
         person_found = False
         person_to_find = raw_input('Person to Find (first name): ')
         for entry in phonebook:
-            if entry.first == person_to_find:
-                person_to_find = True
-                print '\n*** FOUND ***\n %s %s, %s, %s' % (
+            if entry.search_name == person_to_find.upper():
+                person_found = True
+                print '\n*** FOUND ***\n %s %s, %s, %s, %s' % (
                     entry.first, 
                     entry.last, 
                     entry.email, 
-                    entry.phone
+                    entry.phone,
+                    entry.url
                 ) 
         if person_found == False:
             print '\n** NOT FOUND **\n'
@@ -69,14 +72,16 @@ while user_action != 7:
         last = raw_input('Last Name: ')
         email = raw_input('Email: ')
         phone = raw_input('Phone: ')
-        new_person = Person(first, last, email, phone)
+        url = raw_input('Website: ')
+        search_name = first.upper()
+        new_person = Person(first, last, email, phone, url)
         phonebook.append(new_person)
 
 # DELETE ENTRY
     if user_action == 3:
         person_to_remove = raw_input('Person to Remove (first name): ')
         for i in range(0, len(phonebook)):
-            if phonebook[i].first == person_to_remove:
+            if phonebook[i].search_name == person_to_remove.upper():
                 are_you_sure = raw_input('Remove %s %s (Y/N)? ' % (phonebook[i].first, phonebook[i].last))
                 if are_you_sure.upper() == 'Y' or are_you_sure.upper() == 'YES':
                     phonebook.remove(phonebook[i])
@@ -86,8 +91,12 @@ while user_action != 7:
 # LIST ALL ENTRIES
     if user_action == 4:
         for i in range(0, len(phonebook)):
-            print '\n***%s %s, %s, %s' % (
-                phonebook[i].first, phonebook[i].last, phonebook[i].email, phonebook[i].phone
+            print '\n***%s %s, %s, %s, %s' % (
+                phonebook[i].first,
+                phonebook[i].last,
+                phonebook[i].email,
+                phonebook[i].phone,
+                phonebook[i].url
                 )
 
 # SAVE ENTRIES
